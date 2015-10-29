@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>convert_markdown_2_html by amooly</title>
+    <title>使用Python转换markdown为HTML by amooly</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -11,8 +11,8 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">convert_markdown_2_html</h1>
-      <h2 class="project-tagline">使用Python转换markdown为HTML</h2>
+      <h1 class="project-name">使用Python转换markdown为HTML</h1>
+      <h2 class="project-tagline">python markdown</h2>
     </section>
 
     <section class="main-content">
@@ -81,6 +81,20 @@ html2 = markdown.markdown(input=source_file, output=target_file, [encoding])
 
 <span class="pl-k">if</span> <span class="pl-c1">__name__</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>__main__<span class="pl-pds">'</span></span>:
     parse(sys.argv[<span class="pl-c1">1</span>:])</pre></div>
+
+<p>现在可以直接使用如下命令行进行调用：</p>
+
+<div class="highlight highlight-source-shell"><pre>python converter.py -i <span class="pl-c1">test</span>.md -o <span class="pl-c1">test</span>.html</pre></div>
+
+<hr>
+
+<h3>
+<a id="相关链接" class="anchor" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关链接</h3>
+
+<ol>
+<li><a href="https://github.com/waylan/Python-Markdown">waylan/Python-Markdown</a></li>
+<li><a href="http://www.tutorialspoint.com/python/python_command_line_arguments.htm">Python Command Line Arguments</a></li>
+</ol>
 
       <footer class="site-footer">
 
