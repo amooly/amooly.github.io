@@ -1,1 +1,94 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>convert_markdown_2_html by amooly</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">convert_markdown_2_html</h1>
+      <h2 class="project-tagline">使用Python转换markdown为HTML</h2>
+    </section>
+
+    <section class="main-content">
+      <h2>
+<a id="前言" class="anchor" href="#%E5%89%8D%E8%A8%80" aria-hidden="true"><span class="octicon octicon-link"></span></a>前言</h2>
+
+<p>markdown是技术博客主比较喜欢的书写格式。很多博客引擎都实现了markdown书写的文档转换成静态的html文件。<br>
+<a href="http://pythonhosted.org/Markdown/reference.html">markdown类库</a>是markdown转换html的Python版实现。</p>
+
+<h2>
+<a id="环境准备" class="anchor" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87" aria-hidden="true"><span class="octicon octicon-link"></span></a>环境准备</h2>
+
+<ul>
+<li>首先通过<code>pip</code>安装markdown模块：</li>
+</ul>
+
+<pre><code>pip install markdown
+</code></pre>
+
+<h2>
+<a id="代码示例" class="anchor" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B" aria-hidden="true"><span class="octicon octicon-link"></span></a>代码示例</h2>
+
+<pre><code>import markdown
+
+// markdown提供两个接口，一个允许转换字符串，一个进行文件的转换。
+// 1. 对字符串的转换
+html1 = markdown.markdown(your_text_string)
+
+// 2. 对文件进行转换
+html2 = markdown.markdown(input=source_file, output=target_file, [encoding])
+</code></pre>
+
+<p>详细的API可以查看<a href="http://pythonhosted.org/Markdown/reference.html">这里</a></p>
+
+<h2>
+<a id="编写调用脚本" class="anchor" href="#%E7%BC%96%E5%86%99%E8%B0%83%E7%94%A8%E8%84%9A%E6%9C%AC" aria-hidden="true"><span class="octicon octicon-link"></span></a>编写调用脚本</h2>
+
+<p>为了使用方便，我写了一个简单的调用脚本<code>converter.py</code>:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">import</span> sys, getopt, markdown
+
+<span class="pl-k">def</span> <span class="pl-en">parse</span>(<span class="pl-smi">argv</span>):
+    <span class="pl-k">try</span>:
+        opts,vals <span class="pl-k">=</span> getopt.getopt(argv, <span class="pl-s"><span class="pl-pds">"</span>i:o:<span class="pl-pds">"</span></span>)
+    <span class="pl-k">except</span> getopt.GetoptError:
+        <span class="pl-k">print</span>(<span class="pl-s"><span class="pl-pds">'</span>usage: converter.py -i &lt;source_file&gt; [-o &lt;target_file&gt;]<span class="pl-pds">'</span></span>)
+        sys.exit(<span class="pl-c1">2</span>)
+
+    source_file <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>
+    target_file <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>
+    <span class="pl-k">for</span> opt, val <span class="pl-k">in</span> opts:
+        <span class="pl-k">if</span> opt <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>-i<span class="pl-pds">'</span></span>:
+            source_file <span class="pl-k">=</span> val
+        <span class="pl-k">elif</span> opt <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>-o<span class="pl-pds">'</span></span>:
+            target_file <span class="pl-k">=</span> val
+
+    <span class="pl-k">if</span> source_file <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>:
+        <span class="pl-k">print</span>(<span class="pl-s"><span class="pl-pds">'</span>usage: converter.py -i &lt;source_file&gt; [-o &lt;target_file&gt;]<span class="pl-pds">'</span></span>)
+        sys.exit(<span class="pl-c1">2</span>)
+
+    <span class="pl-k">if</span> target_file <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>:
+        target_file <span class="pl-k">=</span> source_file<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">'</span>.html<span class="pl-pds">'</span></span>
+
+    markdown.markdownFromFile(<span class="pl-smi">input</span><span class="pl-k">=</span>source_file, <span class="pl-smi">output</span><span class="pl-k">=</span>target_file)
+    <span class="pl-k">print</span>(<span class="pl-s"><span class="pl-pds">'</span>convert successfully.<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">if</span> <span class="pl-c1">__name__</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">'</span>__main__<span class="pl-pds">'</span></span>:
+    parse(sys.argv[<span class="pl-c1">1</span>:])</pre></div>
+
+      <footer class="site-footer">
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
