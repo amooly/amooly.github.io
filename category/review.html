@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet/less" type="text/css" href="/theme/stylesheet/style.less">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js" type="text/javascript"></script>
+
+  <link rel="stylesheet" type="text/css" href="/theme/stylesheet/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/stylesheet/font-awesome.min.css">
+
+  <!--
+
+
+-->
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--<meta name="robots" content="" />-->
+
+    <meta name="author" content="Mooly" />
+    <meta name="description" content="" />
+<meta property="og:site_name" content="Mooly's Home"/>
+<meta property="og:type" content="blog"/>
+<meta property="og:title" content="Mooly's Home"/>
+<meta property="og:description" content=""/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content=""/>
+
+  <title>Mooly's Home &ndash; Category: Review</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="">
+        <img src="/theme/img/mooly.png" alt="" title="">
+      </a>
+      <h1><a href=""></a></h1>
+      <p>崇洋媚外的代码狗</p>
+      <!--<nav>
+        <ul class="list">
+          <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
+          <li><a href="http://python.org/" target="_blank">Python.org</a></li>
+          <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+          <li><a href="#" target="_blank">You can modify those links in your config file</a></li>
+        </ul>
+      </nav>-->
+      <ul class="social">
+        <li><a class="sc-github" href="https://github.com/test" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-google" href="https://google.com/+Test" target="_blank"><i class="fa fa-google"></i></a></li>
+        <li><a class="sc-rss" href="//www.example.com/feeds/all.atom.xml" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+
+<article>
+  <header>
+    <h2><a href="/code-standard.html#code-standard">Code standard</a></h2>
+    <p>
+      Posted on 五 03 十二月 2010 in <a href="/category/review.html">Review</a>
+    </p>
+  </header>
+  <div>
+      <h2>金额的使用</h2>
+<p>资金计算与处理使用Money类，禁止使用浮点数直接处理，避免精度问题，应该将其转换为以分为单位的整型。</p>
+<h2>字符串</h2>
+<h3>比较</h3>
+<p>最好使用<code>StringUtils.equal</code>，避免出现空指针。例如：</p>
+<div class="highlight"><pre><span></span><span class="n">a</span><span class="o">.</span><span class="na">equal</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</pre></div>
+
+
+<p>当a为空，此时会抛出空指针异常。</p>
+<h2>枚举类</h2>
+<h3>枚举类对比</h3>
+<ul>
+<li>最好使用<code>StringUtils.equal</code>，避免出现空指针异常。</li>
+<li>当然，最好是能转换成相应的枚举。否则容易出现由于取错值的字段导致始终不等。
+例如：</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">StringUtil</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">EnableStatusEnum</span><span class="o">.</span><span class="na">BLOCK_STATUS</span><span class="o">.</span><span class="na">name</span><span class="o">(),</span><span class="n">enabledStatusStr</span><span class="o">)</span>
+</pre></div>
+
+
+<p>注意，由于<code>EnableStatusEnum.BLOCK_STATUS.name()</code>为<code>BLOCK_STATUS</code>，所以始终不可能相等。</p>
+<h2>异常</h2>
+<h3>异常处理</h3>
+<ul>
+<li>捕捉到的异常，不允许不做任何处理。至少要记录日志，或者重新抛出。</li>
+<li>最好层的业务使用者，必须处理异常，将其转换成用户可以理解的内容 ...</li></ul>
+      <a class="btn" href="/code-standard.html#code-standard">Continue reading</a>
+  </div>
+</article>
+
+  <div class="pagination">
+  </div>
+
+    <footer>
+        <p>&copy; Mooly </p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Mooly's Home ",
+  "url" : "",
+  "image": "",
+  "description": ""
+}
+</script></body>
+</html>
