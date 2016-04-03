@@ -1,0 +1,38 @@
+## 前言
+这周，主要学习使用Python的[markdown](https://github.com/waylan/Python-Markdown)模块进行markdown文档转换html的学习。  
+借鉴学习Sublime Text3的扩展插件[sublimetext-markdown-preview](https://github.com/revolunet/sublimetext-markdown-preview)的原理，即其提供了两种生成方式：
+- 一种是基于markdown模块，一种是基于github API接口的方式。github接口方式，对每天的生成次数有限制，所以我并不想通过这种受限其他因素的形式。
+- 第二种方式，使用markdown模块，可以满足geek的控制欲，同时，markdown模块本身提供的扩展插件，基本满足了现阶段markdown的转换需求。
+
+## 转换
+markdown模块自身不支持转换成代码块。需要额外使用其[扩展库](https://pythonhosted.org/Markdown/extensions/index.html)中的[Fenced Code Blocks](https://pythonhosted.org/Markdown/extensions/fenced_code_blocks.html)，才能使markdown文档中代码块转换为HTML语言中的`<pre><code></code></pre>`。命令如下：  
+
+```shell
+python -m markdown -x markdown.extensions.fenced_code test.md > test.html
+```
+
+## 代码高亮
+在实现代码高亮，有两种方式，一种是在页面渲染的时候，采用javascript完成转换，另一种方式是通过使用其他扩展，生成HTML时，同时完成代码高亮的结构生成，并使用外部的CSS样式，实现高亮。
+### 使用外部javascript
+现阶段找到的方式是使用[highlight.js](https://highlightjs.org/)。其原理是查询html页面中的`<pre><code>`标签，并将该标签内容转换为可以实现代码高亮的结构。然后引入外部样式，既可以完成代码的高亮。具体使用可以参考官网的使用。
+
+### 使用markdown的扩展
+上一步的扩展，只能暂时支持转换，其代码高亮还需要另一个扩展插件及其`css`配置才能生效。  
+引入扩展`CodeHilite`，完成代码块的代码语法高亮。  
+命令如下：  
+
+```shell
+python -m markdown -x markdown.extensions.fenced_code -x markdown.extensions.codehilite  test2.md > test_2.html
+```
+### 分析
+上述两种方式中，第二种方式，其实难度并未增加太多。另外，使用外部javascript，在页面被访问，还需要额外地进行渲染操作，这显然不符合静态博客的初衷。所以我更偏向于第二种。
+
+## 引入样式
+`CodeHilite`可以在转换时，带入默认的样式。也可以引入其他的CSS样式，例如：[这个](https://github.com/richleland/pygments-css)。  
+在上述的实例中，选择一个样式，导入HTML页面，即可实现一个代码高亮的转换过程。
+
+## 下一步计划
+进一步了解markdown模块及其扩展的使用，完成一个具备完整功能的完整版转换模块。这一个模块作为未来blog engine的markdown转换模块。
+
+## 题外话
+在一开始学习markdown转换html的时候，就关注了Python的markdown模块，但是开始上手学得很浅，发现不能转换代码结构为`<pre><code>`的时候，就放弃这个模块，转向其他模块。却没有深入去学习其扩展的应用。等到了后来其他模块都没办法满足的时候，选择去看Sublime的`sublimetext-markdown-preview`扩展，才重新发现markdown结合其扩展原来有这么大的威力。看来自己的学习方法还是存在比较大的问题，对于新知识的学习，容易浮在表面，同样的玩具，在其他大神手中，竟可以玩得出神入化，在自己手上连基本功能都没完成。看来自己要更加努力才行啊。
