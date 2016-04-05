@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+    <link rel="stylesheet/less" type="text/css" href="/theme/stylesheet/style.less">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js" type="text/javascript"></script>
+
+  <link rel="stylesheet" type="text/css" href="/theme/stylesheet/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/stylesheet/font-awesome.min.css">
+
+  <!--
+
+-->
+
+    <link rel="shortcut icon" href="/theme/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--<meta name="robots" content="" />-->
+
+<meta name="author" content="Mooly" />
+<meta name="description" content="Mac下借助shadowsocks提供的socks5代理，使用一些开源软件转换为http代理。" />
+<meta name="keywords" content="OS X, FreeDom">
+<meta property="og:site_name" content="Mooly's Home"/>
+<meta property="og:title" content="Socks5代理转Http协议的尝试"/>
+<meta property="og:description" content="Mac下借助shadowsocks提供的socks5代理，使用一些开源软件转换为http代理。"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/socks5dai-li-zhuan-httpxie-yi-de-chang-shi.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-04-05 00:00:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/mooly.html">
+<meta property="article:section" content="misc"/>
+<meta property="article:tag" content="OS X"/>
+<meta property="article:tag" content="FreeDom"/>
+<meta property="og:image" content="">
+  <title>Mooly's Home &ndash; Socks5代理转Http协议的尝试</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="/index.html">
+        <img src="/theme/img/mooly.png" alt="About me" title="Mooly">
+      </a>
+      <h1><a href="">Mooly</a></h1>
+      <p>一只崇洋媚外的代码狗</p>
+      <!--<nav>
+        <ul class="list">
+          <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
+          <li><a href="http://python.org/" target="_blank">Python.org</a></li>
+          <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+          <li><a href="#" target="_blank">You can modify those links in your config file</a></li>
+        </ul>
+      </nav>-->
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/whbfcc" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/amooly" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-rss" href="" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+
+<article>
+  <header>
+    <h1 id="socks5dai-li-zhuan-httpxie-yi-de-chang-shi">Socks5代理转Http协议的尝试</h1>
+    <p>Posted on 二 05 四月 2016 in <a href="/category/misc.html">misc</a></p>
+    <div class="tag-cloud">
+    <p>
+      <a href="/tag/os-x.html">OS X</a>
+      <a href="/tag/freedom.html">FreeDom</a>
+    </p>
+  </div>
+    <hr>
+  </header>
+  <div>
+    <h2>前言</h2>
+<p>这些天一直在Mac下捣鼓http代理。很多软件只支持http代理，不支持socks5代理，例如Sublime Text和terminal。有些时候需要进行国外网站连接时，速度非常慢，例如，在Sublime中安装package时，会出现连接超时。</p>
+<h2>proxychains</h2>
+<p>proxychains是github上的一个开源项目，可以完成socks5转http协议。最新的版本是<a href="https://github.com/rofl0r/proxychains-ng">proxychains-ng</a>。  </p>
+<h3>使用示例</h3>
+<ul>
+<li>安装</li>
+</ul>
+<div class="highlight"><pre><span></span>brew install proxychains-ng
+</pre></div>
+
+
+<p>查看brew的安装目录<code>/usr/local/Cellar/</code>，可以看到<code>proxychains-ng</code>安装成功。</p>
+<ul>
+<li>配置</li>
+</ul>
+<div class="highlight"><pre><span></span>vim /usr/local/Cellar/proxychains-ng/4.10/etc/proxychains.conf
+
+<span class="c1"># 在文档的末尾的[playlist]添加代理类型，代理地址和端口</span>
+socks5  127.0.0.1 1080
+</pre></div>
+
+
+<ul>
+<li>使用
+启动相应的socks5客户端。然后就可以在命令行中使用代理了——直接在相应的命令行前添加<code>proxychains4</code>即可。例如</li>
+</ul>
+<div class="highlight"><pre><span></span>proxychains4 git push
+</pre></div>
+
+
+<h3>说明</h3>
+<p><code>proxychains-ng</code>其原理是利用了 LD_PRELOAD 这个环境变量。</p>
+<blockquote>
+<p>在 Unix 系统中，如果设置了 LD_PRELOAD 环境变量，那么在程序运行时，动态链接器会先加载该环境变量所指定的动态库。也就是说，这个动态库的加载优先于任何其它的库，包括 libc。
+ProxyChains 创建了一个叫 libproxychains4.so（Mac 上是 libproxychains4.dylib）的动态库。里面重写了 connect、close 以及 sendto 等与 socket 相关的函数，通过这些函数发出的数据将会走代理，详细代码可以参考 libproxychains.c。
+在主程序里，它会读取配置文件，查找 libproxychains4 所在位置，把这些信息存入环境变量后执行子程序。这样子程序里对 socket 相关的函数调用就会被 Hook 了，对子程序来说，跟代理相关的东西都是透明的。</p>
+</blockquote>
+<p>也就是说，其实这是一种代码侵入式的方式。<br />
+在最新版的OSX，即El Capitan中，<a href="https://developer.apple.com/library/prerelease/mac/releasenotes/MacOSX/WhatsNewInOSX/Articles/MacOSX10_11.html">SIP</a>加强了安全防护手段，阻止了代码的注入。所以这种方式在以后的系统中都是不可行的。<br />
+解决方案有两种，一种是关闭SIP。另一种方式，在github的issue中，有网友提出一种解决方案，这里就不细说了，有兴趣请查阅<a href="https://github.com/rofl0r/proxychains-ng/issues/78">这里</a></p>
+<h2>privoxy</h2>
+<p><a href="http://www.privoxy.org/">privoxy</a>在http代理服务方面之前跟tor进行合作，老牌值得信赖（tor后来转而跟<a href="http://www.pps.univ-paris-diderot.fr/~jch/software/polipo/">polipo</a>合作。不过实际使用过程，我发现还是privoxy的配置比较舒服。）。<br />
+相比proxychains，privoxy相当于直接在本地监听指定的端口，启动一个HTTP的代理服务，任何转发到这个端口的服务相当于使用了这一HTTP代理服务。  </p>
+<h3>使用示例</h3>
+<ul>
+<li>安装</li>
+</ul>
+<div class="highlight"><pre><span></span>brew install privoxy
+</pre></div>
+
+
+<ul>
+<li>配置
+在privoxy的主程序目录下创建配置文件<code>conf</code>。</li>
+</ul>
+<div class="highlight"><pre><span></span>vim /usr/local/Cellar/privoxy/3.0.23/sbin/config
+
+<span class="c1"># 在文档的最后添加如下语句，将接收到的数据转发到对应的ip和端口。</span>
+<span class="c1"># 此处，设定的监听端口为8118，数据转发到本地`127.0.0.1`；</span>
+listen-address 0.0.0.0:8118
+
+forward-socks5 / 127.0.0.1:1080 .
+</pre></div>
+
+
+<ul>
+<li>使用</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 直接运行就可以</span>
+/usr/local/Cellar/privoxy/3.0.23/privoxy
+</pre></div>
+
+
+<p>此时，系统就在本地建立了一个监听本地8118端口的HTTP代理。</p>
+<h3>说明</h3>
+<p>在实际操作中，暂时没办法直接让所有的命令都使用HTTP代理。例如，<code>ping</code>命令，始终没有转发到HTTP代理中，不知是否跟其socket有关系。这个有待进一步的学习，等学习完《UNIX网络高级编程》后，再来仔细解析一下。<br />
+现阶段，有部分命令在运行时，可以指定其代理。例如<code>pip</code>命令：</p>
+<div class="highlight"><pre><span></span>sudo pip --proxy http://proxy_host:port install somepackage
+</pre></div>
+
+
+<h2>总结</h2>
+<p>之前尝试使用<code>squid</code>在自己的海外服务器上搭建一个HTTP代理服务器，发现，最大的问题是，GFW能够进行DNS污染，所以，在没有对数据加密的情况下，始终不可能越过长城。加密的最大问题来自证书，在证书这一关，我做了各种尝试，最终不得要领，只能暂时搁置了。<br />
+最近在上网的时候，发现可以通过socks转HTTP的方式在本地建立一个HTTP代理服务器，将数据转发到socks代理上。于是，有如上的尝试。上面的说明都只是抛砖引玉，简单说说我尝试的方案。以后有空再慢慢解析。</p>
+<hr />
+<h2>链接：</h2>
+<ol>
+<li><a href="http://stackoverflow.com/questions/14149422/using-pip-behind-a-proxy">stackoverflow-Using pip behind a proxy</a></li>
+</ol>
+  </div>
+</article>
+
+    <footer>
+        <p>&copy; Mooly </p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - Base on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Socks5代理转Http协议的尝试",
+  "headline": "Socks5代理转Http协议的尝试",
+  "datePublished": "2016-04-05 00:00:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Mooly",
+    "url": "/author/mooly.html"
+  },
+  "image": "{{ SITEURL }}/{{ THEME_STATIC_DIR }}/img/profile.png",
+  "url": "/socks5dai-li-zhuan-httpxie-yi-de-chang-shi.html",
+  "description": "Mac下借助shadowsocks提供的socks5代理，使用一些开源软件转换为http代理。"
+}
+</script></body>
+</html>
