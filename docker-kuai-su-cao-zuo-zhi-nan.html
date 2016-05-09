@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+
+    <link rel="stylesheet/less" type="text/css" href="/theme/stylesheet/style.less">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js" type="text/javascript"></script>
+
+  <link rel="stylesheet" type="text/css" href="/theme/stylesheet/pygments.min.css">
+  <link rel="stylesheet" type="text/css" href="/theme/stylesheet/font-awesome.min.css">
+
+  <!--
+
+-->
+
+    <link rel="shortcut icon" href="/theme/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!--<meta name="robots" content="" />-->
+  
+    <meta name="google-site-verification" content="iO4cZfjGoC2LTAWSvSNocSKMhQ5OuWeaGLvh5uei_80" />
+  
+<meta name="author" content="Mooly" />
+<meta name="description" content="Docker是现阶段虚拟技术最火热的一个名词，本文致力于能够让已经对docker有初步了解的人能够在一段时间未接触docker的情况下，快速回忆起一些常见的操作命令。" />
+<meta name="keywords" content="Docker, 快速上手">
+<meta property="og:site_name" content="Mooly's Home"/>
+<meta property="og:title" content="Docker 快速操作指南"/>
+<meta property="og:description" content="Docker是现阶段虚拟技术最火热的一个名词，本文致力于能够让已经对docker有初步了解的人能够在一段时间未接触docker的情况下，快速回忆起一些常见的操作命令。"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="/docker-kuai-su-cao-zuo-zhi-nan.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-05-09 21:54:00+08:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="/author/mooly.html">
+<meta property="article:section" content="misc"/>
+<meta property="article:tag" content="Docker"/>
+<meta property="article:tag" content="快速上手"/>
+<meta property="og:image" content="">
+  <title>Mooly's Home &ndash; Docker 快速操作指南</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="/index.html">
+        <img src="/theme/img/mooly.png" alt="About me" title="Mooly">
+      </a>
+      <h1><a href="">Mooly</a></h1>
+      <p>一只崇洋媚外的代码狗</p>
+      <!--<nav>
+        <ul class="list">
+          <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
+          <li><a href="http://python.org/" target="_blank">Python.org</a></li>
+          <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+          <li><a href="#" target="_blank">You can modify those links in your config file</a></li>
+        </ul>
+      </nav>-->
+      <ul class="social">
+        <li><a class="sc-twitter" href="https://twitter.com/whbfcc" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        <li><a class="sc-github" href="https://github.com/amooly" target="_blank"><i class="fa fa-github"></i></a></li>
+        <li><a class="sc-rss" href="" target="_blank"><i class="fa fa-rss"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+
+<article>
+  <header>
+    <h1 id="docker-kuai-su-cao-zuo-zhi-nan">Docker 快速操作指南</h1>
+    <p>Posted on 一 09 五月 2016 in <a href="/category/misc.html">misc</a></p>
+    <div class="tag-cloud">
+    <p>
+      <a href="/tag/docker.html">Docker</a>
+      <a href="/tag/kuai-su-shang-shou.html">快速上手</a>
+    </p>
+  </div>
+    <hr>
+  </header>
+  <div>
+    <h2>介绍</h2>
+<p>Docker，可以简单的理解为一种操作系统虚拟化的解决方案，是一种在操作系统层面上的虚拟化，所以相比传统的硬件层面更加轻量级，启动速度更快，占用硬盘更小。（不过，Docker只能是作为Linux系统的虚拟方案）
+<img alt="" src="media/14623223892724/14623229472836.jpg" />￼
+如上图，可以将Docker类比于Java，而Docker Engine就好比JVM。因此在运维方面，可以将应用程序或者环境配置封装到Docker容器中，就像Java程序的打包，在已经做好了兼容的达到更快速部署。</p>
+<h2>概念介绍</h2>
+<p>Docker中有三种基本的概念：
+- 镜像（image）
+- 容器（container）
+- 仓库（repository）</p>
+<h3>镜像</h3>
+<p>Docker镜像类似于传统虚拟技术的系统镜像，是一个封装了一些应用程序的只读模板。用户可以直接下载镜像进行使用，Docker也允许用户在其他镜像基础上创建自己的镜像，提交自己的镜像供其他用户使用。其实现增量修改和维护（后面会介绍），使用的是Union FS。</p>
+<h3>容器</h3>
+<p>Docker利用容器来运行应用。 
+容器可以理解为，是从镜像的基础上运行起来的一个系统实例。它可以被启动、开始、停止、删除。
+可以把容器看做是一个简易版的 Linux 环境（包括root用户权限、进程空间、用户空间和网络空间等）和运行在其中的应用程序。</p>
+<blockquote>
+<p>注：镜像是只读的，容器在启动的时候创建一层可写层作为最上层，用户在系统上的配置修改等操作就在这一层中进行保存。</p>
+</blockquote>
+<h3>仓库</h3>
+<p>仓库是集中存放镜像文件的场所，仓库注册服务器（Registry）上往往存放着多个仓库。有时候仓库和仓库注册服务器并不严格区分。Docker官方有一个仓库<a href="https://hub.docker.com/">Docker Hub</a>，类似于Github，用户也可以自建一个仓库。</p>
+<p>定位一个镜像，一般使用如下的格式来定位：</p>
+<div class="highlight"><pre><span></span><span class="o">[</span>username<span class="o">]</span>/repository:tag
+</pre></div>
+
+
+<p>例如
+<code>amooly/hadoop:base</code> ，其中的<code>tag</code>，默认为<code>latest</code>。</p>
+<h2>安装</h2>
+<p>Ubuntu 14.04的安装命令如下：</p>
+<div class="highlight"><pre><span></span>$ sudo apt-get update
+$ sudo apt-get install -y docker.io
+$ sudo ln -sf /usr/bin/docker.io /usr/local/bin/docker
+$ sudo sed -i <span class="s1">&#39;$acomplete -F _docker docker&#39;</span> /etc/bash_completion.d/docker.io
+</pre></div>
+
+
+<h2>Docker容器管理</h2>
+<h3>运行容器</h3>
+<div class="highlight"><pre><span></span>docker run <span class="o">[</span>OPTIONS<span class="o">]</span> IMAGE <span class="o">[</span>COMMAND<span class="o">]</span> <span class="o">[</span>ARG...<span class="o">]</span>
+</pre></div>
+
+
+<p>安装完Docker之后，可以直接通过如上的命令指定一个镜像和相应的命令，创建一个Docker容器，运行起来，并且进入容器。
+当镜像不存在本地时，会从仓库自动拉取下载下来。</p>
+<blockquote>
+<p><strong>例：</strong>
+</p>
+</blockquote>
+<div class="highlight"><pre><span></span>docker run -it --name container_name ubuntu:latest /bin/bash
+</pre></div>
+
+
+<blockquote>
+<p>上面的命令指定Ubuntu镜像创建一个容器，来运行<code>/bin/bash</code>命令。<code>-t</code>和<code>-i</code>分别表示打开终端和保持输入流为打开状态。<code>--name</code>则用来表示容器的名称。</p>
+</blockquote>
+<p>如果要让容器在后台运行，则使用<code>-d</code>参数。例如</p>
+<div class="highlight"><pre><span></span>docker run -d -it ubuntu:latest /bin/bash
+</pre></div>
+
+
+<h3>退出Docker容器</h3>
+<p>一般情况下Docker容器会在运行完启动时指定的命令就会退出。或者可以在打开的输入流中，类似操作普通Linux操作系统一样，使用<code>exit</code>命令，也可以进行退出。</p>
+<h3>展示Docker容器</h3>
+<p>使用<code>ps</code>命令，可以展示容器的镜像、运行的命令、containerId等等。
+- 展示正在运行中的容器</p>
+<div class="highlight"><pre><span></span>docker ps
+</pre></div>
+
+
+<ul>
+<li>展示所有容器</li>
+</ul>
+<div class="highlight"><pre><span></span>docker ps -a
+</pre></div>
+
+
+<h3>删除Docker容器</h3>
+<ul>
+<li>Docker在关闭时，可以直接使用如下命令进行删除。</li>
+</ul>
+<div class="highlight"><pre><span></span>docker rm <span class="o">{</span>containerId<span class="o">}</span>
+</pre></div>
+
+
+<ul>
+<li>Docker还在运行，此时需要如下命令，强制删除。</li>
+</ul>
+<div class="highlight"><pre><span></span>docker rm -f <span class="o">{</span>containerId<span class="o">}</span>
+</pre></div>
+
+
+<h2>Docker镜像管理</h2>
+<h3>查询镜像</h3>
+<p>下面命令可以展示本地已有的镜像：</p>
+<div class="highlight"><pre><span></span>docker images
+</pre></div>
+
+
+<h3>删除镜像</h3>
+<ul>
+<li>镜像没有对应的容器在运行时，可以直接使用如下命令进行删除</li>
+</ul>
+<div class="highlight"><pre><span></span>docker rmi <span class="o">{</span>imageId<span class="o">}</span>
+</pre></div>
+
+
+<ul>
+<li>镜像如果还存在对应的容器，则需要使用如下命令进行强制删除</li>
+</ul>
+<div class="highlight"><pre><span></span>docker rmi -f <span class="o">{</span>imageId<span class="o">}</span>
+</pre></div>
+
+
+<h3>拉取镜像</h3>
+<ul>
+<li>镜像可以直接通过如下命令从<code>docker hub</code>拉取</li>
+</ul>
+<div class="highlight"><pre><span></span>docker pull <span class="o">{</span>imageId<span class="o">}</span>
+</pre></div>
+
+
+<ul>
+<li>在运行<code>run</code>命令的时候，假如本地不存在该镜像，程序将会从远程库拉取下来。</li>
+</ul>
+<h3>创建自己的镜像</h3>
+<p>用户可以基于自己的容器，创建一个自定义的镜像。如下命令：</p>
+<div class="highlight"><pre><span></span>docker commit -m <span class="s2">&quot;commit message&quot;</span> -a <span class="s2">&quot;author&quot;</span> <span class="o">{</span>containerId<span class="o">}</span> <span class="o">[</span>username<span class="o">]</span>/repository:tag
+</pre></div>
+
+
+<h2>仓库管理</h2>
+<p>Docker hub是官方的仓库，类似于Github。用户也可以自行建立本地仓库。</p>
+<h3>登录</h3>
+<p>使用<code>docker login</code>可以设置用户名和密码、邮箱完成注册和登录。注册后，本地的<code>.dockercfg</code>将保存用户的认证信息。</p>
+<h3>基本操作</h3>
+<ul>
+<li><code>docker search</code>用来搜错官方仓库中的镜像。</li>
+<li><code>docker pull</code>用来下载镜像到本地。</li>
+<li><code>docker push</code>用来推送自己的镜像到Docker Hub。</li>
+</ul>
+  </div>
+</article>
+
+    <footer>
+        <p>&copy; Mooly </p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - Base on <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-76949319-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": "Docker 快速操作指南",
+  "headline": "Docker 快速操作指南",
+  "datePublished": "2016-05-09 21:54:00+08:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": "Mooly",
+    "url": "/author/mooly.html"
+  },
+  "image": "{{ SITEURL }}/{{ THEME_STATIC_DIR }}/img/profile.png",
+  "url": "/docker-kuai-su-cao-zuo-zhi-nan.html",
+  "description": "Docker是现阶段虚拟技术最火热的一个名词，本文致力于能够让已经对docker有初步了解的人能够在一段时间未接触docker的情况下，快速回忆起一些常见的操作命令。"
+}
+</script></body>
+</html>
