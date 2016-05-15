@@ -78,8 +78,8 @@
   </header>
   <div>
     <h2>介绍</h2>
-<p>Docker，可以简单的理解为一种操作系统虚拟化的解决方案，是一种在操作系统层面上的虚拟化，所以相比传统的硬件层面更加轻量级，启动速度更快，占用硬盘更小。（不过，Docker只能是作为Linux系统的虚拟方案）
-<img alt="" src="media/14623223892724/14623229472836.jpg" />￼
+<p>Docker，可以简单的理解为一种操作系统虚拟化的解决方案，是一种在操作系统层面上的虚拟化，所以相比传统的硬件层面更加轻量级，启动速度更快，占用硬盘更小。（不过，Docker只能是作为Linux系统的虚拟方案）<br />
+<img alt="" src="https://lh3.googleusercontent.com/-kTPJILDnmY4/VzgNIRoE2ZI/AAAAAAAABH0/wqISw2WV-aw/I/14623229472836.jpg" />  ￼
 如上图，可以将Docker类比于Java，而Docker Engine就好比JVM。因此在运维方面，可以将应用程序或者环境配置封装到Docker容器中，就像Java程序的打包，在已经做好了兼容的达到更快速部署。</p>
 <h2>概念介绍</h2>
 <p>Docker中有三种基本的概念：
@@ -89,14 +89,14 @@
 <h3>镜像</h3>
 <p>Docker镜像类似于传统虚拟技术的系统镜像，是一个封装了一些应用程序的只读模板。用户可以直接下载镜像进行使用，Docker也允许用户在其他镜像基础上创建自己的镜像，提交自己的镜像供其他用户使用。其实现增量修改和维护（后面会介绍），使用的是Union FS。</p>
 <h3>容器</h3>
-<p>Docker利用容器来运行应用。 
-容器可以理解为，是从镜像的基础上运行起来的一个系统实例。它可以被启动、开始、停止、删除。
-可以把容器看做是一个简易版的 Linux 环境（包括root用户权限、进程空间、用户空间和网络空间等）和运行在其中的应用程序。</p>
+<p>Docker利用容器来运行应用。 <br />
+容器可以理解为，是从镜像的基础上运行起来的一个系统实例。它可以被启动、开始、停止、删除。<br />
+可以把容器看做是一个简易版的 Linux 环境（包括root用户权限、进程空间、用户空间和网络空间等）和运行在其中的应用程序。  </p>
 <blockquote>
 <p>注：镜像是只读的，容器在启动的时候创建一层可写层作为最上层，用户在系统上的配置修改等操作就在这一层中进行保存。</p>
 </blockquote>
 <h3>仓库</h3>
-<p>仓库是集中存放镜像文件的场所，仓库注册服务器（Registry）上往往存放着多个仓库。有时候仓库和仓库注册服务器并不严格区分。Docker官方有一个仓库<a href="https://hub.docker.com/">Docker Hub</a>，类似于Github，用户也可以自建一个仓库。</p>
+<p>仓库是集中存放镜像文件的场所，仓库注册服务器（Registry）上往往存放着多个仓库。有时候仓库和仓库注册服务器并不严格区分。Docker官方有一个仓库<a href="https://hub.docker.com/">Docker Hub</a>，类似于Github，用户也可以自建一个仓库。  </p>
 <p>定位一个镜像，一般使用如下的格式来定位：</p>
 <div class="highlight"><pre><span></span><span class="o">[</span>username<span class="o">]</span>/repository:tag
 </pre></div>
@@ -119,20 +119,16 @@ $ sudo sed -i <span class="s1">&#39;$acomplete -F _docker docker&#39;</span> /et
 </pre></div>
 
 
-<p>安装完Docker之后，可以直接通过如上的命令指定一个镜像和相应的命令，创建一个Docker容器，运行起来，并且进入容器。
-当镜像不存在本地时，会从仓库自动拉取下载下来。</p>
-<blockquote>
-<p><strong>例：</strong></p>
-<p>```shell
-docker run -it --name container_name ubuntu:latest /bin/bash</p>
-</blockquote>
-<div class="highlight"><pre><span></span>&gt;
-&gt; 上面的命令指定Ubuntu镜像创建一个容器，来运行`/bin/bash`命令。`-t`和`-i`分别表示打开终端和保持输入流为打开状态。`--name`则用来表示容器的名称。
+<p>安装完Docker之后，可以直接通过如上的命令指定一个镜像和相应的命令，创建一个Docker容器，运行起来，并且进入容器。<br />
+当镜像不存在本地时，会从仓库自动拉取下载下来。<br />
+<strong>例如：</strong></p>
+<div class="highlight"><pre><span></span>docker run -it --name container_name ubuntu:latest /bin/bash
+</pre></div>
 
-如果要让容器在后台运行，则使用`-d`参数。例如
 
-```shell
-docker run -d -it ubuntu:latest /bin/bash
+<p>上面的命令指定Ubuntu镜像创建一个容器，来运行<code>/bin/bash</code>命令。<code>-t</code>和<code>-i</code>分别表示打开终端和保持输入流为打开状态。<code>--name</code>则用来表示容器的名称。</p>
+<p>如果要让容器在后台运行，则使用<code>-d</code>参数。例如</p>
+<div class="highlight"><pre><span></span>docker run -d -it ubuntu:latest /bin/bash
 </pre></div>
 
 
