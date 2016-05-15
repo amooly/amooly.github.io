@@ -122,18 +122,17 @@ $ sudo sed -i <span class="s1">&#39;$acomplete -F _docker docker&#39;</span> /et
 <p>安装完Docker之后，可以直接通过如上的命令指定一个镜像和相应的命令，创建一个Docker容器，运行起来，并且进入容器。
 当镜像不存在本地时，会从仓库自动拉取下载下来。</p>
 <blockquote>
-<p><strong>例：</strong>
-</p>
+<p><strong>例：</strong></p>
+<p>```shell
+docker run -it --name container_name ubuntu:latest /bin/bash</p>
 </blockquote>
-<div class="highlight"><pre><span></span>docker run -it --name container_name ubuntu:latest /bin/bash
-</pre></div>
+<div class="highlight"><pre><span></span>&gt;
+&gt; 上面的命令指定Ubuntu镜像创建一个容器，来运行`/bin/bash`命令。`-t`和`-i`分别表示打开终端和保持输入流为打开状态。`--name`则用来表示容器的名称。
 
+如果要让容器在后台运行，则使用`-d`参数。例如
 
-<blockquote>
-<p>上面的命令指定Ubuntu镜像创建一个容器，来运行<code>/bin/bash</code>命令。<code>-t</code>和<code>-i</code>分别表示打开终端和保持输入流为打开状态。<code>--name</code>则用来表示容器的名称。</p>
-</blockquote>
-<p>如果要让容器在后台运行，则使用<code>-d</code>参数。例如</p>
-<div class="highlight"><pre><span></span>docker run -d -it ubuntu:latest /bin/bash
+```shell
+docker run -d -it ubuntu:latest /bin/bash
 </pre></div>
 
 
